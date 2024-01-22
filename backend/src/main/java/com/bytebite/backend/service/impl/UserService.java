@@ -7,7 +7,6 @@ import com.bytebite.backend.request.CreateUserRequest;
 import com.bytebite.backend.request.LoginUserRequest;
 import com.bytebite.backend.response.AuthResponse;
 import com.bytebite.backend.security.JwtTokenProvider;
-import com.bytebite.backend.security.UserPrincipal;
 import com.bytebite.backend.service.IUserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -28,11 +27,10 @@ public class UserService implements IUserService {
     private final JwtTokenProvider tokenProvider;
     private final PasswordEncoder passwordEncoder;
 
-    public AuthResponse login(LoginUserRequest loginUserRequest){
-       Authentication authentication =
-               authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginUserRequest.getEmail(),loginUserRequest.getPassword()));
+    public AuthResponse login(LoginUserRequest loginUserRequest) {
+        Authentication authentication =
+                authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginUserRequest.getEmail(), loginUserRequest.getPassword()));
         SecurityContextHolder.getContext().setAuthentication(authentication);
-//        UserPrincipal principal = (UserPrincipal) authentication.getPrincipal();
         return tokenProvider.generateTokenFromAuthentication(authentication);
     }
 

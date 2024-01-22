@@ -17,20 +17,14 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        User user =
-                userRepository.findByEmailIgnoreCase(email)
-                        .orElseThrow(
-                                () -> {
-                                    throw new UsernameNotFoundException(
-                                            "The email provided is not registered. Please check the"
-                                                    + " email address and try again.");
-                                });
+        User user = userRepository.findByEmailIgnoreCase(email).orElseThrow(() -> {
+            throw new UsernameNotFoundException("The email provided is not registered. Please check the" + " email address and try again.");
+        });
         return UserPrincipal.create(user);
     }
-    public UserDetails loadUserById(Long id) throws UsernameNotFoundException{
+
+    public UserDetails loadUserById(Long id) throws UsernameNotFoundException {
         Optional<User> user = userRepository.findById(id);
-        return UserPrincipal.create(
-                user.orElseThrow(
-                        () -> new UsernameNotFoundException("User with id " + id + "not present")));
+        return UserPrincipal.create(user.orElseThrow(() -> new UsernameNotFoundException("User with id " + id + "not present")));
     }
 }

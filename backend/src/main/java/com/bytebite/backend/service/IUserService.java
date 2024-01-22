@@ -9,6 +9,8 @@ import java.util.List;
 
 public interface IUserService {
     User signUp(CreateUserRequest user);
+
     AuthResponse login(LoginUserRequest loginUserRequest);
+
     List<User> getAllUsers();
 }

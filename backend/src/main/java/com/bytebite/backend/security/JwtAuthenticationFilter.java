@@ -28,9 +28,9 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        try{
+        try {
             Optional<String> jwt = getToken(request);
-            if(jwt.isPresent() && tokenProvider.validateToken(jwt.get())){
+            if (jwt.isPresent() && tokenProvider.validateToken(jwt.get())) {
                 Long userId = tokenProvider.getUserIdFromJWT(jwt.get());
                 UserDetails userDetails = userDetailsService.loadUserById(userId);
                 UsernamePasswordAuthenticationToken authentication =
@@ -38,14 +38,13 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
                 SecurityContextHolder.getContext().setAuthentication(authentication);
             }
-        }
-        catch (Exception ex){
-            logger.error("Could not set user authentication in security context",ex);
+        } catch (Exception ex) {
+            logger.error("Could not set user authentication in security context", ex);
         }
         filterChain.doFilter(request, response);
     }
 
-    private Optional<String> getToken(HttpServletRequest request){
+    private Optional<String> getToken(HttpServletRequest request) {
         return Optional.ofNullable(request.getHeader(AUTHORIZATION_HEADER))
                 .filter(s -> !s.isEmpty())
                 .map(BEARER_PATTERN::matcher)
