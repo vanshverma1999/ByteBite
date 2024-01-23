@@ -53,4 +53,14 @@ public class RestaurantController {
         return ResponseEntity.ok(restaurantService.addToFavorites(restaurantId, userId));
     }
 
+    @GetMapping("/search")
+    public ResponseEntity<List<Restaurant>> findRestaurantsByName(@RequestParam("restaurantName") String restaurantName){
+        return ResponseEntity.ok(restaurantService.getRestaurantsByName(restaurantName));
+    }
+
+    @GetMapping("/all")
+    public ResponseEntity<List<Restaurant>> findAllRestaurants(){
+        return ResponseEntity.ok(restaurantService.getAllRestaurant());
+    }
+
 }

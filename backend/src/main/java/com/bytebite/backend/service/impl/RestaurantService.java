@@ -83,7 +83,7 @@ public class RestaurantService implements IRestaurantService {
 
     @Override
     public List<Restaurant> getRestaurantsByName(String name) {
-        return restaurantRepository.findByNameLikeIgnoreCase(name);
+        return restaurantRepository.findByNameContainsIgnoreCase(name);
     }
 
     @Override
