@@ -7,6 +7,7 @@ import com.bytebite.backend.model.enums.StatusCode;
 import com.bytebite.backend.request.CreateRestaurantRequest;
 import com.bytebite.backend.response.Response;
 import com.bytebite.backend.service.IRestaurantService;
+
 import com.bytebite.backend.service.IReviewService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -28,6 +29,7 @@ import java.util.List;
 public class RestaurantController {
 
     private final IRestaurantService restaurantService;
+
     private final IReviewService reviewService;
 
     @PostMapping("/")
@@ -57,7 +59,7 @@ public class RestaurantController {
     }
 
     @GetMapping("/search")
-    public ResponseEntity<List<Restaurant>> findRestaurantsByName(@RequestParam("restaurantName") String restaurantName) {
+    public ResponseEntity<List<Restaurant>> findRestaurantsByName(@RequestParam("restaurantName") String restaurantName){
         return ResponseEntity.ok(restaurantService.getRestaurantsByName(restaurantName));
     }
 
@@ -70,5 +72,4 @@ public class RestaurantController {
     public ResponseEntity<Double> getAverageRating(@PathVariable("restaurantId") Long restaurantId) {
         return ResponseEntity.ok(reviewService.calculateAverageRating(restaurantId));
     }
-
 }
