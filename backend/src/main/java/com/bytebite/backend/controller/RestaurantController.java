@@ -7,10 +7,12 @@ import com.bytebite.backend.model.enums.StatusCode;
 import com.bytebite.backend.request.CreateRestaurantRequest;
 import com.bytebite.backend.response.Response;
 import com.bytebite.backend.service.IRestaurantService;
+import com.bytebite.backend.service.IReviewService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -26,6 +28,7 @@ import java.util.List;
 public class RestaurantController {
 
     private final IRestaurantService restaurantService;
+    private final IReviewService reviewService;
 
     @PostMapping("/")
     public ResponseEntity<Restaurant> createRestaurant(@RequestBody CreateRestaurantRequest restaurantRequest, @RequestParam("userId") Long userId) {
@@ -54,13 +57,18 @@ public class RestaurantController {
     }
 
     @GetMapping("/search")
-    public ResponseEntity<List<Restaurant>> findRestaurantsByName(@RequestParam("restaurantName") String restaurantName){
+    public ResponseEntity<List<Restaurant>> findRestaurantsByName(@RequestParam("restaurantName") String restaurantName) {
         return ResponseEntity.ok(restaurantService.getRestaurantsByName(restaurantName));
     }
 
     @GetMapping("/all")
-    public ResponseEntity<List<Restaurant>> findAllRestaurants(){
+    public ResponseEntity<List<Restaurant>> findAllRestaurants() {
         return ResponseEntity.ok(restaurantService.getAllRestaurant());
+    }
+
+    @GetMapping("/rating/{restaurantId}")
+    public ResponseEntity<Double> getAverageRating(@PathVariable("restaurantId") Long restaurantId) {
+        return ResponseEntity.ok(reviewService.calculateAverageRating(restaurantId));
     }
 
 }
